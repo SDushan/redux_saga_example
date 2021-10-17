@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, StatusBar, StyleSheet, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
+import { Text, View, Image, StatusBar, StyleSheet, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions'
 
@@ -11,9 +11,16 @@ const ProductsScreen = ({ onFetchProducts, products, isFetchingProducts }) => {
 
   const renderProducts = ({ item }) => (
     <View style={styles.productContainer}>
-      <Text>{item.title}</Text>
-      <Text>{item.price}</Text>
-      <Text>{item.category}</Text>
+      <Text style={styles.titleStyle}>{item.title}</Text>
+      <View style={styles.wrapperStyle}>
+        <Image style={styles.imgStyle} source={{ uri: item.image }} />
+        <View style={{ paddingLeft: 10 }}>
+          <Text>{`$ ${item.price}`}</Text>
+          <Text>{`⭐️ ${item.rating.rate} / 5 (${item.rating.count})`}</Text>
+          <Text>{item.category}</Text>
+        </View>
+      </View>
+      <Text>{item.description}</Text>
     </View>
   )
 
@@ -52,15 +59,30 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 18,
   },
+  titleStyle: {
+    fontSize: 16,
+    fontWeight: 'bold'
+  },
   productContainer: {
     backgroundColor: "#F7F7FA",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginHorizontal: 10,
-    marginVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginHorizontal: 15,
+    marginVertical: 10,
     minHeight: 60,
-    borderWidth: 0.5
+    borderWidth: 0.5,
+    borderRadius: 5,
+    borderColor: 'gray'
   },
+  wrapperStyle: {
+    flexDirection: 'row',
+    paddingVertical: 10
+  },
+  imgStyle: {
+    width: 60,
+    height: 60,
+    borderRadius: 5
+  }
 });
 
 const mapStateToProps = ({ products }) => ({
